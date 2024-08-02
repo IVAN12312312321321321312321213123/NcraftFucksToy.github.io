@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy's Slap BattlesV9</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #FFB6C1, #FF1493); /* Gradient background */
+            overflow-x: hidden; /* Hide horizontal scroll bars */
+            scroll-behavior: smooth; /* Smooth scrolling behavior */
+        }
+
+        .section {
+            height: 120vh; /* Make the section taller */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .image-container.left {
+            left: 20px; /* Space from the left */
+        }
+
+        .image-container.right {
+            right: 20px; /* Space from the right */
+        }
+
+        .image-container img {
+            width: 300px; /* Adjust width as needed */
+            height: auto; /* Maintain aspect ratio */
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .label {
+            position: absolute;
+            top: -100px; /* Start position above the screen */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 36px; /* Large font size */
+            font-family: 'Arial Black', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            opacity: 1;
+            animation: dropDown 1s ease-out, fadeOut 10s ease-out 1s; /* Adjusted animation timing */
+        }
+
+        @keyframes dropDown {
+            from {
+                top: -100px;
+                opacity: 0;
+            }
+            to {
+                top: 50%;
+                opacity: 1;
+                transform: translateX(-50%) translateY(-50%);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .discord-button, .cool-button {
+            background: #3498db; /* Blue background */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            width: 200px;
+            height: 50px;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, 0.3s;
+            position: Center;
+            bottom: 150px; /* Adjusted distance from bottom */
+            opacity: 0; /* Initially hidden */
+        }
+
+        .discord-button {
+            background: linear-gradient(135deg, #7289DA, #99AAB5); /* Gradient background */
+            width: 250px;
+            height: 60px;
+            font-size: 20px;
+            bottom: 220px; /* Positioned above the cool button */
+        }
+
+        .discord-button.show, .cool-button.show {
+            opacity: 1; /* Show when class is added */
+        }
+
+        .discord-button:hover, .cool-button:hover {
+            background: #2980b9; /* Darker blue on hover */
+            transform: scale(1.05); /* Enlarge on hover */
+        }
+
+        .animate-label {
+            position: absolute;
+            bottom: 100px; /* Position label above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2980b9; /* Blue background */
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .info-tab {
+            position: absolute;
+            top: 20px; /* Adjusted distance from top */
+            right: 20px; /* Distance from right */
+            background: #3498db; /* Blue background */
+            color: white;
+            border: none;
+            border-radius: 25px;
+            width: 150px;
+            height: 40px;
+            font-size: 16px;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .info-tab:hover {
+            background: #2980b9; /* Darker blue on hover */
+            transform: scale(1.05); /* Enlarge on hover */
+        }
+
+        .info-content {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hide off-screen initially */
+            width: 100%;
+            height: 100%;
+            background: #3498db; /* Blue background */
+            color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            transition: right 0.5s ease-in-out;
+        }
+
+        .info-content.show {
+            right: 0; /* Slide in */
+        }
+
+        .info-content h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .info-content a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .info-content a:hover {
+            text-decoration: none;
+        }
+
+        .credits {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="section1" class="section">
+        <div class="image-container left">
+            <img src="Pf7oXR3.png" alt="Image 1">
+            <img src="JvZlO60.png" alt="Image 2">
+        </div>
+        <div class="image-container right">
+            <img src="1a6e6b7ae12c5f3606cb61f30ba0f68a.png" alt="Image 3">
+            <img src="aac8f9c7996c81d8da4caa6164aa4ef5.png" alt="Image 4">
+        </div>
+        <div id="visitLabel" class="label">Toy's Slap Battles V9!</div>
+        <button id="discordButton" class="discord-button">Join The Discord</button>
+        <button id="coolButton" class="cool-button">Join Toy's Slap Battles!</button>
+        <div id="animateLabel" class="animate-label">Going To The Webpage...</div>
+        <button id="infoTab" class="info-tab">Information Tab</button>
+        <div id="infoContent" class="info-content">
+            <h2>About Toy's Slap Battles V9</h2>
+            <p>This game is a popular battle game on Roblox. Players can slap each other with various slap powers and compete for high scores. It's known for its fun and engaging gameplay.</p>
+            <p>For more details, visit the <a href="https://www.roblox.com/games/16926053145" target="_blank">Roblox Game Page</a>.</p>
+            <button id="closeInfo" class="info-tab">Close</button>
+        </div>
+    </div>
+    <div class="credits">
+        This Website Was Made By Ivan And Ivan Only And This Website Was Coded Using Visual Studio Code
+    </div>
+    <button id="backToTop" class="back-to-top">&uarr;</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const infoTab = document.getElementById('infoTab');
+            const infoContent = document.getElementById('infoContent');
+            const closeInfo = document.getElementById('closeInfo');
+
+            infoTab.addEventListener('click', () => {
+                infoContent.classList.toggle('show');
+            });
+
+            closeInfo.addEventListener('click', () => {
+                infoContent.classList.remove('show');
+            });
+
+            // Show the Discord button after the label fades out
+            document.getElementById('visitLabel').addEventListener('animationend', function() {
+                const discordButton = document.getElementById('discordButton');
+                discordButton.classList.add('show');
+            });
+
+            // Show the Cool Button and animate the label on click
+            document.getElementById('coolButton').addEventListener('click', function() {
+                const animateLabel = document.getElementById('animateLabel');
+                animateLabel.style.opacity = 1; // Show label
+                animateLabel.style.animation = 'fadeIn 1s ease-in-out'; // Animation for fading in
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'https://www.roblox.com/games/16926053145'; // Replace with your desired URL
+                    animateLabel.style.animation = 'fadeOut 1s ease-in-out'; // Animation for fading out
+                }, 3000);
+            });
+
+            // Show the Cool Button after the label fades out
+            document.getElementById('visitLabel').addEventListener('animationend', function() {
+                const coolButton = document.getElementById('coolButton');
+                coolButton.classList.add('show');
+            });
+        });
+    </script>
+</body>
+</html>
